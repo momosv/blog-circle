@@ -1,0 +1,4 @@
+mybatis-circle:
+  mapper-locations: classpath:/circle-mapper/*.xml
+  type-aliases-package: cn.momosv.blog.circle.dao
+  config-location: cn.momosv.blog.circle.dao

@@ -44,19 +44,19 @@ public class CircleMybatisConfiguration {
 
 
     //  配置类型别名
-    @Value("${mybatis2.type-aliases-package}")
+    @Value("${mybatis-circle.type-aliases-package}")
     private String typeAliasesPackage2;
 
     //  配置mapper的扫描，找到所有的mapper.xml映射文件
-    @Value("${mybatis2.ws-mapper-locations}")
+    @Value("${mybatis-circle.mapper-locations}")
     private String mapperLocations2;
 
     //  配置mapper的扫描，找到所有的mapper.xml映射文件
-    @Value("${mybatis.ws-mapper-locations}")
+    @Value("${mybatis-common.mapper-locations}")
     private String mapperLocations;
 
     //  加载全局的配置文件
-    @Value("${mybatis.config-location}")
+    @Value("${mybatis-common.config-location}")
     private String configLocation;
 
 
