@@ -17,12 +17,11 @@ public class CircleController {
 
     @ResponseBody
     @RequestMapping("addUser")
-    public String addUser(){
+    public String addUser() throws Exception {
         TbUserPO userPO = new TbUserPO();
-        userPO.setId(UUID.randomUUID().toString());
         userPO.setUserName("momo");
         userService.insertOne(userPO);
-        TbUserPO userPO1= userService.selectByPrimaryKey1(userPO.getId());
+        TbUserPO userPO1= (TbUserPO) userService.selectByPrimaryKey(TbUserPO.class,"1");
         return userPO1.toString();
     }
 }

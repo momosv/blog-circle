@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TbUserPOMapper extends BasicMapper {
-    TbUserPO selectByPrimaryKey(String id);
+    TbUserPO selectByPrimaryKey1(Integer id);
 }

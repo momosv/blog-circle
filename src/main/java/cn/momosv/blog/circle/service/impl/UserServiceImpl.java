@@ -22,7 +22,7 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
     }
 
     @Override
-    public TbUserPO selectByPrimaryKey1(String id) {
-        return userMapper.selectByPrimaryKey(id);
+    public TbUserPO selectByPrimaryKey1(Integer id) {
+        return userMapper.selectByPrimaryKey1(id);
     }
 }

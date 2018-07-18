@@ -4,7 +4,7 @@ package cn.momosv.blog.circle.model;
 import cn.momosv.blog.common.model.base.IBaseDBPO;
 
 public class TbUserPO extends IBaseDBPO {
-    private String id;
+    private Integer id;
 
     private String userName;
 
@@ -14,12 +14,12 @@ public class TbUserPO extends IBaseDBPO {
 
     private Byte sex;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Integer id) {
+        this.id = id ;
     }
 
     public String getUserName() {
@@ -60,17 +60,22 @@ public class TbUserPO extends IBaseDBPO {
     }
 
     @Override
-    public String _getPKValue() {
+    public Integer _getPKValue() {
         return id;
     }
 
     @Override
     public void _setPKValue(Object var1) {
-        this.id= (String) var1;
+        this.id= (Integer) var1;
     }
 
     @Override
     public  String  _getPKColumnName(){
         return "id";
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }
