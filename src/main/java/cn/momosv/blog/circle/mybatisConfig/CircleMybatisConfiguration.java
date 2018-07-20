@@ -2,6 +2,7 @@ package cn.momosv.blog.circle.mybatisConfig;
 
 
 import cn.momosv.blog.common.config.SqlPrintInterceptor;
+import cn.momosv.blog.common.wrapper.MyWrapperFactory;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -9,6 +10,7 @@ import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -67,14 +69,16 @@ public class CircleMybatisConfiguration {
     }
 
     @Bean(name = "circleTransactionManager")
-    public DataSourceTransactionManager master2TransactionManager(@Qualifier("circleDataSource") DataSource datasource) {
+    public DataSourceTransactionManager circleTransactionManager(@Qualifier("circleDataSource") DataSource datasource) {
         return new DataSourceTransactionManager(datasource);
     }
 
     @Bean(name = "circleSqlSessionFactory")
-    public SqlSessionFactory clusterSqlSessionFactory(@Qualifier("circleDataSource") DataSource datasource ) throws Exception {
+    public SqlSessionFactory clusterSqlSessionFactory(@Qualifier("circleDataSource") DataSource datasource
+            ,@Qualifier("pageHelper") PageHelper pageHelper
+            ,@Qualifier("sqlPrintInterceptor")SqlPrintInterceptor sqlPrintInterceptor) throws Exception {
        try{
-        final SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(datasource);
 
         // 读取配置
@@ -88,9 +92,9 @@ public class CircleMybatisConfiguration {
            rL.addAll(Arrays.asList(resource));
            rL.addAll(Arrays.asList(resource2));
         sessionFactory.setMapperLocations(rL.toArray(new Resource[rL.size()]));
-
+        sessionFactory.setObjectWrapperFactory(new MyWrapperFactory());
         //添加分页插件、打印sql插件
-        Interceptor[] plugins = new Interceptor[]{pageHelper(),sqlPrintInterceptor()};
+        Interceptor[] plugins = new Interceptor[]{pageHelper,sqlPrintInterceptor};
         sessionFactory.setPlugins(plugins);
 
         return sessionFactory.getObject();
@@ -104,30 +108,19 @@ public class CircleMybatisConfiguration {
     }
 
 
+/*    @Bean("circleConfigurationCustomizer")
+    public ConfigurationCustomizer mybatisConfigurationCustomizer(){
+        return new ConfigurationCustomizer() {
+            @Override
+            public void customize(org.apache.ibatis.session.Configuration configuration) {
+                configuration.setObjectWrapperFactory(new MyWrapperFactory());
+            }
+        };
+    }*/
+
         //将要执行的sql进行日志打印(不想拦截，就把这方法注释掉)
 
-        public SqlPrintInterceptor sqlPrintInterceptor(){
+     public SqlPrintInterceptor sqlPrintInterceptor(){
         	return new SqlPrintInterceptor();
         }
-
-
-
-
-        public PageHelper pageHelper() {
-            PageHelper pageHelper = new PageHelper();
-            Properties p = new Properties();
-            p.setProperty("offsetAsPageNum", "true");
-            p.setProperty("rowBoundsWithCount", "true");
-            p.setProperty("reasonable", "true");
-            p.setProperty("returnPageInfo", "check");
-            p.setProperty("params", "count=countSql");
-            p.setProperty("pageSizeZero", "true");//分页尺寸为0时查询所有纪录不再执行分页
-            p.setProperty("reasonable", "true");//页码<=0 查询第一页，页码>=总页数查询最后一页
-            p.setProperty("supportMethodsArguments", "true");//支持通过 Mapper 接口参数来传递分页参数
-            pageHelper.setProperties(p);
-            return pageHelper;
-        }
-
-
-
 }

@@ -12,7 +12,7 @@ public class TbUserPO extends IBaseDBPO {
 
     private String headPic;
 
-    private Byte sex;
+    private Integer sex;
 
     public Integer getId() {
         return id;
@@ -46,11 +46,11 @@ public class TbUserPO extends IBaseDBPO {
         this.headPic = headPic == null ? null : headPic.trim();
     }
 
-    public Byte getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(Byte sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
