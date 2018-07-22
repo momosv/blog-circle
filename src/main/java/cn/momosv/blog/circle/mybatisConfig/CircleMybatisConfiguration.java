@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -63,15 +64,11 @@ public class CircleMybatisConfiguration {
 
 
     //事务管理
-    @Bean(name = "circleDataSourceTransaction")
-    public  PlatformTransactionManager annotationDrivenTransactionManager(@Qualifier("circleDataSource") DataSource datasource) {
+    @Bean(name = "circleDataSourceTransactionManager ")
+    public  DataSourceTransactionManager  annotationDrivenTransactionManager(@Qualifier("circleDataSource") DataSource datasource) {
         return new DataSourceTransactionManager(datasource);
     }
 
-    @Bean(name = "circleTransactionManager")
-    public DataSourceTransactionManager circleTransactionManager(@Qualifier("circleDataSource") DataSource datasource) {
-        return new DataSourceTransactionManager(datasource);
-    }
 
     @Bean(name = "circleSqlSessionFactory")
     public SqlSessionFactory clusterSqlSessionFactory(@Qualifier("circleDataSource") DataSource datasource
@@ -107,7 +104,10 @@ public class CircleMybatisConfiguration {
     }
     }
 
-
+    @Bean("circleSqlSessionTemplate")
+    public SqlSessionTemplate sqlSessionTemplate(@Qualifier("circleSqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
+        return new SqlSessionTemplate(sqlSessionFactory);
+    }
 /*    @Bean("circleConfigurationCustomizer")
     public ConfigurationCustomizer mybatisConfigurationCustomizer(){
         return new ConfigurationCustomizer() {
@@ -118,9 +118,4 @@ public class CircleMybatisConfiguration {
         };
     }*/
 
-        //将要执行的sql进行日志打印(不想拦截，就把这方法注释掉)
-
-     public SqlPrintInterceptor sqlPrintInterceptor(){
-        	return new SqlPrintInterceptor();
-        }
 }

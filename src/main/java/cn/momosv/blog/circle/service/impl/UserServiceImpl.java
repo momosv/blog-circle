@@ -18,7 +18,7 @@ public class UserServiceImpl extends BasicServiceImpl implements UserService {
     @Autowired
     private TbUserPOMapper userMapper;
 
-    @Resource
+   @Autowired
     public void setUserMapper(TbUserPOMapper userMapper) {
         setMapper(userMapper);
     }

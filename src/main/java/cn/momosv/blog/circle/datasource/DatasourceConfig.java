@@ -1,5 +1,6 @@
 package cn.momosv.blog.circle.datasource;
 
+
 import com.alibaba.druid.pool.DruidDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 
 @Configuration("circleDatasourceConfig")
 @ConfigurationProperties(prefix = "spring.circle-datasource")
@@ -69,18 +69,17 @@ public class DatasourceConfig {
   //  @Value("${spring.datasource.filters}")
     private String filters;
 
-    
-	
-    @Bean(name="circleDataSource")
+    @Bean(name="circleDataSource",destroyMethod = "close", initMethod="init")
+    @ConfigurationProperties(prefix = "spring.circle-datasource")
     public DataSource dataSource(){
-        DruidDataSource datasource = new DruidDataSource();  
+        DruidDataSource datasource = new DruidDataSource();
         try {  
 	        datasource.setUrl(this.url);
-	        datasource.setDbType(type);
+	       datasource.setDbType(type);
 	        datasource.setUsername(username);  
 	        datasource.setPassword(password);  
 	        datasource.setDriverClassName(driverClassName);  
-	        datasource.setInitialSize(initialSize);  
+	        datasource.setInitialSize(initialSize);
 	        datasource.setMinIdle(minIdle);  
 	        datasource.setMaxActive(maxActive);  
 	        datasource.setMaxWait(maxWait);  
@@ -91,21 +90,16 @@ public class DatasourceConfig {
 	        datasource.setTestOnBorrow(testOnBorrow);  
 	        datasource.setTestOnReturn(testOnReturn);  
 	        datasource.setPoolPreparedStatements(poolPreparedStatements);  
-            datasource.setFilters(filters);  
-        } catch (SQLException e) {  
+            datasource.setFilters(filters);
+            datasource.setRemoveAbandoned(true);
+         //   datasource.setUseGlobalDataSourceStat(true);
+        } catch (Exception e) {
             logger.error("druid configuration initialization filter", e);  
         }  
         return datasource;  
     }
 
 
-    public Logger getLogger() {
-        return logger;
-    }
-
-    public void setLogger(Logger logger) {
-        this.logger = logger;
-    }
 
     public String getUrl() {
         return url;
