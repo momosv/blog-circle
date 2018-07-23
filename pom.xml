@@ -22,6 +22,11 @@
 			<artifactId>blog-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+        <dependency>
+            <groupId>cn.momosv</groupId>
+            <artifactId>blog-base</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 	</dependencies>
 	<build>
 		<!-- 为jar包取名 -->

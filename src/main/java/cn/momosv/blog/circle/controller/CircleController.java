@@ -1,5 +1,6 @@
 package cn.momosv.blog.circle.controller;
 
+import cn.momosv.blog.base.redis.service.RedisUserService;
 import cn.momosv.blog.circle.model.TbUserPO;
 import cn.momosv.blog.circle.service.UserService;
 import cn.momosv.blog.common.model.base.BasicExample;
