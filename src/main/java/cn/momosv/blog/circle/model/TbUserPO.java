@@ -1,7 +1,7 @@
 package cn.momosv.blog.circle.model;
 
 
-import cn.momosv.blog.common.model.base.IBaseDBPO;
+import cn.momosv.blog.base.mybatis.model.base.IBaseDBPO;
 
 public class TbUserPO extends IBaseDBPO {
     private Integer id;

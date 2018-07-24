@@ -2,7 +2,7 @@ package cn.momosv.blog.circle.dao;
 
 
 import cn.momosv.blog.circle.model.TbUserPO;
-import cn.momosv.blog.common.dao.BasicMapper;
+import cn.momosv.blog.base.mybatis.dao.BasicMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
